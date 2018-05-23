@@ -10,7 +10,7 @@
 
     <div id="worklist" class="row">
       <WorkList 
-        class="col-sm-4" 
+        class="col-sm-4 ml-auto" 
         title="ToDo" 
         :items="todos" 
         button="Begin"
@@ -24,9 +24,11 @@
         @trigger="completeTodo"
         />
       <WorkList 
-        class="col-sm-4" 
+        class="col-sm-4 mr-auto" 
         title="Done" 
         :items="done"
+        button="Delete"
+        @trigger="deleteTodo"
         />
     </div>
 
@@ -68,7 +70,9 @@ export default {
         .push(todoObj)
         .then(snapshot => {
           console.log('todo added to database')
+
         })
+      this.newTask = ''
     },
 
     startTodo (key) {
@@ -77,7 +81,6 @@ export default {
         .then(snapshot => {
           let toBeStarted = snapshot.val()
           toBeStarted.startedAt = Date.now()
-          console.log('---see toBeStarted', toBeStarted)
           todo.child(key).remove()
           wip.child(key).set(toBeStarted)
             .then(err => {
@@ -95,7 +98,6 @@ export default {
         .then(snapshot => {
           let toBeCompleted = snapshot.val()
           toBeCompleted.completedAt = Date.now()
-          console.log('---see toBeCompleted', toBeCompleted)
           wip.child(key).remove()
           done.child(key).set(toBeCompleted)
             .then(err => {
@@ -105,6 +107,10 @@ export default {
               console.log('task completed')
             })
         })
+    },
+
+    deleteTodo (key) {
+      done.child(key).remove()
     }
   },
 

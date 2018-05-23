@@ -2,7 +2,7 @@
   <div class="list mt-4 text-center">
     <b-card :title="title" :id="outline">
 
-      <b-list-group v-for="(value, key) in items" :key="key" class="row">
+      <b-list-group v-for="(value, key) in items" :key="key" class="">
         <b-list-group-item class="text-left p-1">
           {{ value.name }} 
           <b-btn class="p-1 btn" @click="$emit('trigger', key)" v-if="button">{{ button }}</b-btn>
